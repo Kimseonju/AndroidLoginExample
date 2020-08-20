@@ -8,10 +8,14 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.kakao.auth.ApiResponseCallback;
+import com.kakao.auth.AuthService;
 import com.kakao.auth.AuthType;
 import com.kakao.auth.ISessionCallback;
 import com.kakao.auth.KakaoSDK;
 import com.kakao.auth.Session;
+import com.kakao.auth.network.response.AccessTokenInfoResponse;
+import com.kakao.network.ErrorResult;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
 import com.kakao.util.exception.KakaoException;
@@ -47,7 +51,6 @@ public class KaKaoControl  implements ISessionCallback, LoginControl {
         Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data);
 
     }
-
 
     public void onSessionOpened() { //콜백
         Log.i("KAKAO_SESSION", "로그인 성공");

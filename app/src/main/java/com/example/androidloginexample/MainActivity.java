@@ -14,14 +14,22 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginManager;
 import com.facebook.login.widget.LoginButton;
+import com.kakao.auth.ApiResponseCallback;
+import com.kakao.auth.AuthService;
 import com.kakao.auth.IApplicationConfig;
 import com.kakao.auth.KakaoAdapter;
 import com.kakao.auth.KakaoSDK;
+import com.kakao.auth.Session;
+import com.kakao.auth.network.response.AccessTokenInfoResponse;
+import com.kakao.network.ErrorResult;
 
 import java.security.MessageDigest;
 import java.util.Arrays;
@@ -32,11 +40,12 @@ public class MainActivity extends AppCompatActivity {
     private KaKaoControl  mKaKaoLogin;
     private Button kakaologout;
     private FacebookLogin mFacebookLogin;
-
     private LoginButton btn_facebook_login;
-
     private LoginCallback mLoginCallback;
     private CallbackManager mCallbackManager;
+
+    private TextView kakaoAT;
+    private TextView kakaoRT;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
         mContext = getApplicationContext();
         getHashKey(mContext);
         kakaologout=findViewById(R.id.kakaologout);
+        kakaoAT=findViewById(R.id.AT);
+        kakaoRT=findViewById(R.id.RT);
         mKaKaoLogin= new KaKaoControl(new LoginControl.LoginHandler() {
             @Override
             public void cancel() {
@@ -102,9 +113,36 @@ public class MainActivity extends AppCompatActivity {
             case R.id.kakaologin:
                 mKaKaoLogin.Login(this);
                 break;
+            case R.id.kakao_refresh:
+                kakaogetToken();
+                break;
+            case R.id.facebooklogout:
+                mFacebookLogin.Logout();
+                break;
+            case R.id.facebooklogin:
+                mFacebookLogin.Login(this);
+                break;
+            case R.id.facebook_refresh:
+                facebookgetToken();
+                break;
         }
     }
 
+    public void kakaogetToken()
+    {
+
+        String str1=Session.getCurrentSession().getAccessToken();
+        String str2=Session.getCurrentSession().getRefreshToken();
+        kakaoAT.setText("AT = "+str1);
+        kakaoRT.setText("RT = "+str2);
+    }
+    public void facebookgetToken()
+    {
+        String str1= AccessToken.getCurrentAccessToken().getToken();
+        //String str2=;
+        kakaoAT.setText("AT = "+str1);
+        kakaoRT.setText("");
+    }
 
     @Nullable
     public static String getHashKey(Context context) {
