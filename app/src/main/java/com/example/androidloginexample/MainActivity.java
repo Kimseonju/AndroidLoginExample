@@ -1,5 +1,6 @@
 package com.example.androidloginexample;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
@@ -22,6 +23,14 @@ import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.kakao.auth.ApiResponseCallback;
 import com.kakao.auth.AuthService;
 import com.kakao.auth.IApplicationConfig;
@@ -41,14 +50,15 @@ public class MainActivity extends AppCompatActivity {
     private KaKaoControl  mKaKaoLogin;
     private Button kakaologout;
     private FacebookLogin mFacebookLogin;
+    private GoogleLogin mGoogleLogin;
 
+    private GoogleSignInClient mGoogleSignInClient;
     private NaverLogin mNaverLogin;
     //ID와 시크릿키는 네이버에있습니다.
     //네이버등록후 사용가능합니다..
     private static String OAUTH_CLIENT_ID = "jyvqXeaVOVmV";
     private static String OAUTH_CLIENT_SECRET = "527300A0_COq1_XV33cf";
     private static String OAUTH_CLIENT_NAME = "네이버 아이디로 로그인";
-
     private TextView kakaoAT;
     private TextView kakaoRT;
     @Override
@@ -108,19 +118,34 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        //페이스북
-      // mCallbackManager = CallbackManager.Factory.create();
-      // mLoginCallback = new LoginCallback();
 
-      // btn_facebook_login = (LoginButton) findViewById(R.id.btn_facebook_login);
-      // btn_facebook_login.setReadPermissions(Arrays.asList("public_profile", "email"));
-      // btn_facebook_login.registerCallback(mCallbackManager, mLoginCallback);
+        mGoogleLogin=new GoogleLogin(this, this, new LoginControl.LoginHandler() {
+            @Override
+            public void cancel() {
+
+            }
+
+            @Override
+            public void success() {
+
+            }
+
+            @Override
+            public void error(Throwable th) {
+
+            }
+        });
+
+
 
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         mFacebookLogin.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
+        mGoogleLogin.onActivityResult(9003, resultCode, data);
+        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
+
     }
 
 
@@ -154,9 +179,29 @@ public class MainActivity extends AppCompatActivity {
             case R.id.naver_refresh:
                 navergetToken();
                 break;
+            case R.id.googlelogout:
+                mGoogleLogin.Logout();
+                break;
+            case R.id.googlelogin:
+                mGoogleLogin.Login(this);
+                break;
+            case R.id.google_refresh:
+                googlegetToken();
+                break;
         }
     }
 
+
+
+    public void googlegetToken()
+    {
+
+        String str1=mGoogleLogin.account.getServerAuthCode();
+        String str2=mGoogleLogin.account.getEmail();
+        //String str2=Session.getCurrentSession().getRefreshToken();
+        kakaoAT.setText("AT = "+str1);
+        kakaoRT.setText(""+str2);
+    }
     public void kakaogetToken()
     {
 
