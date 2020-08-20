@@ -22,6 +22,7 @@ public class NaverLogin implements LoginControl {
         mSecret=Secret;
         mName=Name;
         handler=loginHandler;
+        init();
     }
 
 
