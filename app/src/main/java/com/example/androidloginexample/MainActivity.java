@@ -30,6 +30,7 @@ import com.kakao.auth.KakaoSDK;
 import com.kakao.auth.Session;
 import com.kakao.auth.network.response.AccessTokenInfoResponse;
 import com.kakao.network.ErrorResult;
+import com.nhn.android.naverlogin.OAuthLogin;
 
 import java.security.MessageDigest;
 import java.util.Arrays;
@@ -40,9 +41,13 @@ public class MainActivity extends AppCompatActivity {
     private KaKaoControl  mKaKaoLogin;
     private Button kakaologout;
     private FacebookLogin mFacebookLogin;
-    private LoginButton btn_facebook_login;
-    private LoginCallback mLoginCallback;
-    private CallbackManager mCallbackManager;
+
+    private NaverLogin mNaverLogin;
+    //ID와 시크릿키는 네이버에있습니다.
+    //네이버등록후 사용가능합니다..
+    private static String OAUTH_CLIENT_ID = "jyvqXeaVOVmV";
+    private static String OAUTH_CLIENT_SECRET = "527300A0_COq1_XV33cf";
+    private static String OAUTH_CLIENT_NAME = "네이버 아이디로 로그인";
 
     private TextView kakaoAT;
     private TextView kakaoRT;
@@ -87,7 +92,22 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        mNaverLogin=new NaverLogin(this, OAUTH_CLIENT_ID, OAUTH_CLIENT_SECRET, OAUTH_CLIENT_NAME, new LoginControl.LoginHandler() {
+            @Override
+            public void cancel() {
 
+            }
+
+            @Override
+            public void success() {
+
+            }
+
+            @Override
+            public void error(Throwable th) {
+
+            }
+        });
         //페이스북
       // mCallbackManager = CallbackManager.Factory.create();
       // mLoginCallback = new LoginCallback();
@@ -125,6 +145,15 @@ public class MainActivity extends AppCompatActivity {
             case R.id.facebook_refresh:
                 facebookgetToken();
                 break;
+            case R.id.naverlogout:
+                mNaverLogin.Logout();
+                break;
+            case R.id.naverlogin:
+                mNaverLogin.Login(this);
+                break;
+            case R.id.naver_refresh:
+                navergetToken();
+                break;
         }
     }
 
@@ -144,6 +173,13 @@ public class MainActivity extends AppCompatActivity {
         kakaoRT.setText("");
     }
 
+    public void navergetToken()
+    {
+        String str1= OAuthLogin.getInstance().getAccessToken(this);
+        String str2= OAuthLogin.getInstance().getRefreshToken(this);
+        kakaoAT.setText("AT = "+str1);
+        kakaoRT.setText("RT = "+str2);
+    }
     @Nullable
     public static String getHashKey(Context context) {
 
