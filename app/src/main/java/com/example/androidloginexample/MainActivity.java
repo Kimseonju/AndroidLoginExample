@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
     private NaverLogin mNaverLogin;
     //ID와 시크릿키는 네이버에있습니다.
-    //네이버등록후 사용가능합니다.
+    //네이버등록후 사용가능합니다..
     private static String OAUTH_CLIENT_ID = "jyvqXeaVOVmV";
     private static String OAUTH_CLIENT_SECRET = "527300A0_COq1_XV33cf";
     private static String OAUTH_CLIENT_NAME = "네이버 아이디로 로그인";
