@@ -1,8 +1,10 @@
 <resources>
-    <string name="app_name"></string>
+    <string name="app_name">AndroidLoginExample</string>
     <string name="facebook_app_id"></string>
     <string name="fb_login_protocol_scheme"></string>
     <string name="google_client_id"></string>
     <string name="project_id"></string>
-    <string name="kakao_app_key"></string>
+
+
+    <string name="kakao_app_key">0ecd692a4ae184054ef783bbd0f967df</string>
 </resources>
