@@ -144,6 +144,7 @@ public class MainActivity extends AppCompatActivity {
         mFacebookLogin.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
         mGoogleLogin.onActivityResult(9003, resultCode, data);
+        mKaKaoLogin.onActivityResult(requestCode,resultCode,data);
         // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
 
     }
@@ -207,6 +208,7 @@ public class MainActivity extends AppCompatActivity {
 
         String str1=Session.getCurrentSession().getAccessToken();
         String str2=Session.getCurrentSession().getRefreshToken();
+
         kakaoAT.setText("AT = "+str1);
         kakaoRT.setText("RT = "+str2);
     }
