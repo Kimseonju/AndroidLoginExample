@@ -1,4 +1,4 @@
-# AndroidLoginExample
+# AndroidLoginExample (java)
 
 
 구현된기능
